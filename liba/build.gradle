@@ -35,6 +35,7 @@ dependencies {
     //    compile project(path: ':libb')
     implementation 'com.yanzhenjie:permission:2.0.0-rc12'
     embed 'com.yanzhenjie:permission:2.0.0-rc12'
+    implementation project(':libb')
 }
 
 xEmbedGroup {
