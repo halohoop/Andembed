@@ -1,0 +1,48 @@
+apply plugin: 'maven'
+apply plugin: 'groovy'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/groovy' // 指定源码目录
+        }
+        resources {
+            srcDir 'src/main/resources' //资源目录
+        }
+    }
+}
+
+dependencies {
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//
+//    implementation 'com.android.support:appcompat-v7:28.0.0'
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compile gradleApi()
+    compile localGroovy()
+}
+
+group = 'com.halohoop'
+version = '1.0.0'
+/*uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: '')
+        }
+    }
+}*/
+
+apply from: '../bintray.gradle'
+
+//task make2JarReleaseSource(type: Jar) {
+//    baseName = "${project.name}"
+//    version = "${version}"
+//    classifier = "release"
+//    extension = "jar"
+//    from srcClassDir
+//    destinationDir
+//    from project.fileTree("${project.path}/src/main/groovy")
+//    into "${project.buildDir}/libs"
+//    rename
+//}
