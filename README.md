@@ -62,6 +62,8 @@
      ```bash
      ./gradlew clean :module_name:make2JarRelease
      ```
+     
+     任务执行成功后会在对应project（module）的[build\output\jar]目录中生产jar包.
 
 - 6. 缺陷描述
 
