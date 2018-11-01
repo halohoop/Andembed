@@ -53,12 +53,17 @@
          embed 'com.google.guava:guava:27.0-jre'//新增
      }
      ```
+- 5. 打jar包Task任务make2JarRelease
 
-- 5. 缺陷描述
+     ```bash
+     ./gradlew clean :module_name:make2JarRelease
+     ```
+
+- 6. 缺陷描述
 
      该插件目前尚且不能满足以下几种方式引入库的合并
 
-     - 5.1.
+     - 6.1.
 
      ```groovy
      dependencies {
@@ -69,7 +74,7 @@
      }
      ```
 
-     - 5.2.
+     - 6.2.
 
      ```groovy
      dependencies {
