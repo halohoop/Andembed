@@ -15,7 +15,7 @@
 - 0. 在rootProject的build.gradle中，引用插件
 
      ```groovy
-     classpath 'com.halohoop:librarymerger:1.0.0'
+     classpath 'com.halohoop:librarymerger:1.0.1'
      ```
 
 - 2. 在library的默认构建脚本build.gradle中，加入插件
@@ -32,12 +32,14 @@
          packageName = "com.halohoop.liba"
          //必须。配置这个库的版本号码，和Android DSL相关的配置中的一致即可
          versionName = "1.0.0"
+         //可省略。配置最终jar包的输出文件夹的绝对路径
+         outputDirPath = ""//自定义输出路径
      }
      ```
 
 - 4. 在dependencies DSL 中把需要合入Jar包的库使用 [embed] 配置加入插件的管理
 
-     - 注意：embed不能代替implementation或者api *
+     - **注意：embed不能代替implementation或者api **
 
      ```groovy
      dependencies {
