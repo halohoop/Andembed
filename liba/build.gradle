@@ -34,13 +34,14 @@ dependencies {
     implementation 'com.google.guava:guava:27.0-jre'
     //    compile project(path: ':libb')
     implementation 'com.yanzhenjie:permission:2.0.0-rc12'
-    embed 'com.yanzhenjie:permission:2.0.0-rc12'
     implementation project(':libb')
+    embed 'com.yanzhenjie:permission:2.0.0-rc12'
 }
 
 xEmbedGroup {
     packageName = "com.halohoop.liba"
     versionName = "1.0.0"
+//    outputDirPath = ""//自定义输出路径
 }
 
 task a() {
@@ -63,10 +64,10 @@ task b() {
 
 task c() {
     doFirst {
-        println("tcsk c stcrt")
+        println("task c stcrt")
     }
     doLast {
-        println("tcsk c end")
+        println("task c end")
     }
 }
 
