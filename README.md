@@ -15,7 +15,7 @@
 - 0. 在rootProject的build.gradle中，引用插件
 
      ```groovy
-     classpath 'com.halohoop:andembed:1.0.0'
+     classpath 'com.halohoop:librarymerger:1.0.0'
      ```
 
 - 2. 在library的默认构建脚本build.gradle中，加入插件
@@ -61,7 +61,7 @@
          //...
          implementation files('libs/classes.jar')
          //...
-         embed files('libs/classes.jar')//尚不支持，V1.1开始会支持，正在开发中
+         embed files('libs/classes.jar')//尚不支持，V1.1.0开始会支持，正在开发中
      }
      ```
 
@@ -72,6 +72,6 @@
          //...
          implementation project(':libb')
          //...
-         embed project(':libb')//尚不支持，V1.1开始会支持，正在开发中
+         embed project(':libb')//尚不支持，V1.1.0开始会支持，正在开发中
      }
      ```
