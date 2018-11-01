@@ -17,6 +17,10 @@
 - 0. 在rootProject的build.gradle中，引用插件
 
      ```groovy
+     jcenter()
+     ```
+
+     ```groovy
      classpath 'com.halohoop:librarymerger:1.0.1'
      ```
 
