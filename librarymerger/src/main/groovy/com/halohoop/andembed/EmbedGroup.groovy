@@ -12,7 +12,7 @@ class EmbedGroup {
         packageName = project.getObjects().property(String.class)
         versionName = project.getObjects().property(String.class)
         outputDirPath = project.getObjects().property(String.class)
-        outputDirPath.set(project.buildDir.getAbsolutePath() + File.separator + "output" + File.separator + "jar")
+        outputDirPath.set(project.buildDir.getAbsolutePath() + File.separator + "outputs" + File.separator + "jar")
     }
 
     Property<String> getPackageName() {
