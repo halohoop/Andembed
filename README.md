@@ -21,7 +21,7 @@
      ```
 
      ```groovy
-     classpath 'com.halohoop:librarymerger:1.0.2'
+     classpath 'com.halohoop:librarymerger:1.0.3'
      ```
 
 - 2. 在library的默认构建脚本build.gradle中，加入插件
