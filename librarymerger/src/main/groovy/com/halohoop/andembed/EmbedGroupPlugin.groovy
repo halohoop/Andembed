@@ -15,8 +15,8 @@ class EmbedGroupPlugin implements Plugin<Project>{
     def resolvedAar = new HashSet<ResolvedArtifact>(4)
     def resolvedJar = new HashSet<ResolvedArtifact>(4)
 
-    def classesReleasePath = "\\intermediates\\classes\\release"
-    def classesReleasePath2 = "\\intermediates\\javac\\release\\compileReleaseJavaWithJavac\\classes"
+    def classesReleasePath = "${File.separator}intermediates${File.separator}classes${File.separator}release"
+    def classesReleasePath2 = "${File.separator}intermediates${File.separator}javac${File.separator}release${File.separator}compileReleaseJavaWithJavac${File.separator}classes"
 
     //判断是否是空的文件夹
     def isEmptyDir(def file) {
@@ -122,7 +122,7 @@ class EmbedGroupPlugin implements Plugin<Project>{
                 archiveName = "tmp.jar"
 
                 from srcClassDir
-                destinationDir = new File("${project.buildDir}\\outputs\\jar")
+                destinationDir = new File("${project.buildDir}${File.separator}outputs${File.separator}jar")
                 //根据aar或者jar配置这里需要的文件
                 //exclude "${classesBasePath}/BuildConfig.class"
                 //exclude "${classesBasePath}/BuildConfig\$*.class"
@@ -136,7 +136,7 @@ class EmbedGroupPlugin implements Plugin<Project>{
 //                include "${srcClassDir}/**/*.class"
 //                include "*.class"
                 doFirst {
-                    new File("${project.buildDir}\\outputs\\${extension}").mkdirs()
+                    new File("${project.buildDir}${File.separator}outputs${File.separator}${extension}").mkdirs()
                     println("${it.name} start")
                     println("正在收集以下路径的类:" + srcClassDir)
                 }
@@ -162,7 +162,7 @@ class EmbedGroupPlugin implements Plugin<Project>{
 
                 archiveName = "${project.name}-release.jar"
 
-                from project.zipTree(new File("${project.buildDir}\\outputs\\jar\\tmp.jar"))
+                from project.zipTree(new File("${project.buildDir}${File.separator}outputs${File.separator}jar${File.separator}tmp.jar"))
                 destinationDir = new File(outputDirPath)
                 exclude {
                     println("handling file :" + it.name)
@@ -179,7 +179,7 @@ class EmbedGroupPlugin implements Plugin<Project>{
                 }
                 doLast {
                     println("${it.name} finish")
-                    def file = new File("${project.buildDir}\\outputs\\jar\\tmp.jar")
+                    def file = new File("${project.buildDir}${File.separator}outputs${File.separator}jar${File.separator}tmp.jar")
                     if (file.exists()) {
                         file.delete()
                     }
@@ -227,8 +227,8 @@ class EmbedGroupPlugin implements Plugin<Project>{
                 from project.zipTree(aarFile)
                 into srcClassDir
                 exclude 'aidl'
-                exclude 'android\\arch'
-                exclude 'android\\support'
+                exclude "android${File.separator}arch"
+                exclude "android${File.separator}support"
                 exclude 'com'
                 exclude 'res'
                 exclude 'values'
