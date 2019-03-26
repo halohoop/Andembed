@@ -10,6 +10,12 @@ class EmbedGroupPlugin implements Plugin<Project>{
     def project
     def packageName
     def artifactVersion
+    def includeClass
+    def includePackage
+    def excludeJar
+    def excludeAar
+    def excludeClass
+    def excludePackage
     def classesBasePath
 
     def resolvedAar = new HashSet<ResolvedArtifact>(4)
@@ -76,6 +82,14 @@ class EmbedGroupPlugin implements Plugin<Project>{
             if ("".equals(artifactVersion) || artifactVersion == null) {
                 throw new ProjectConfigurationException('Plz add extension with "xEmbedGroup{packageName = "com.halohoop.abc" versionName = ""}"', null)
             }
+
+            includeClass = extension.getIncludeClass().get()
+            includePackage = extension.getIncludePackage().get()
+            excludeJar = extension.getExcludeJar().get()
+            excludeAar = extension.getExcludeJar().get()
+            excludeClass = extension.getExcludeClass().get()
+            excludePackage = extension.getExcludePackage().get()
+
             classesBasePath = packageName.replaceAll("\\.", '\\\\')
 
             //添加自定义构建任务
@@ -133,6 +147,35 @@ class EmbedGroupPlugin implements Plugin<Project>{
                     println("handling file :" + it.name)
                     it.name.equals("R.class") || it.name.startsWith("R\$")
                 }
+
+                if (excludeClass != null && excludeClass.size() > 0) {
+                    excludeClass.each {
+                        println("excludeClass -> ${it}")
+                        //排除指定class
+                        exclude(it)
+                    }
+                }
+                if (excludePackage != null && excludePackage.size() > 0) {
+                    excludePackage.each {
+                        println("excludePackage -> ${it}")
+                        //过滤指定包名下class
+                        exclude("${it}/**/*.class")
+                    }
+                }
+                if (includeClass != null && includeClass.size() > 0) {
+                    includeClass.each {
+                        println("includeClass -> ${it}")
+                        //打包指定的class
+                        include(it)
+                    }
+                }
+                if (includePackage != null && includePackage.size() > 0) {
+                    includePackage.each {
+                        //仅仅打包指定包名下class
+                        include("${it}/**/*.class")
+                    }
+                }
+
 //                include "${srcClassDir}/**/*.class"
 //                include "*.class"
                 doFirst {
@@ -210,13 +253,24 @@ class EmbedGroupPlugin implements Plugin<Project>{
     def copyProcess() {
         project.configurations.embed.resolvedConfiguration.resolvedArtifacts.each { artifact ->
             if ('aar' == artifact.type) {
-                resolvedAar.add(artifact)
+                if (excludeAar != null && excludeAar.size() > 0) {
+                    if (!excludeAar.contains(artifact.file.name)) {
+//                        println("res -> " + artifact.file.name)
+                        resolvedAar.add(artifact)
+                    }
+                }
             } else if ('jar' == artifact.type) {
-                resolvedJar.add(artifact)
+                if (excludeJar != null && excludeJar.size() > 0) {
+                    if (!excludeJar.contains(artifact.file.name)) {
+//                        println("res -> " + artifact.file.name)
+                        resolvedJar.add(artifact)
+                    }
+                }
             } else {
                 throw new ProjectConfigurationException('Only support embed aar and jar dependencies!', null)
             }
         }
+
         def srcClassDir = project.buildDir.absolutePath + classesReleasePath
         Set<File> jarFiles = new HashSet<>()
         resolvedAar.each { artifact ->
