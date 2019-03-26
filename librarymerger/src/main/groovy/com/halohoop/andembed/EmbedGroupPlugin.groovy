@@ -152,27 +152,28 @@ class EmbedGroupPlugin implements Plugin<Project>{
                     excludeClass.each {
                         println("excludeClass -> ${it}")
                         //排除指定class
-                        exclude(it)
+                        exclude "${it}"
                     }
                 }
                 if (excludePackage != null && excludePackage.size() > 0) {
                     excludePackage.each {
                         println("excludePackage -> ${it}")
                         //过滤指定包名下class
-                        exclude("${it}/**/*.class")
+                        exclude "${it}/**/*.class"
                     }
                 }
                 if (includeClass != null && includeClass.size() > 0) {
                     includeClass.each {
                         println("includeClass -> ${it}")
                         //打包指定的class
-                        include(it)
+                        include "${it}"
                     }
                 }
                 if (includePackage != null && includePackage.size() > 0) {
                     includePackage.each {
+                        println("includePackage -> ${it}")
                         //仅仅打包指定包名下class
-                        include("${it}/**/*.class")
+                        include "${it}/**/*.class"
                     }
                 }
 
@@ -258,6 +259,8 @@ class EmbedGroupPlugin implements Plugin<Project>{
 //                        println("res -> " + artifact.file.name)
                         resolvedAar.add(artifact)
                     }
+                } else {
+                    resolvedAar.add(artifact)
                 }
             } else if ('jar' == artifact.type) {
                 if (excludeJar != null && excludeJar.size() > 0) {
@@ -265,6 +268,8 @@ class EmbedGroupPlugin implements Plugin<Project>{
 //                        println("res -> " + artifact.file.name)
                         resolvedJar.add(artifact)
                     }
+                } else {
+                    resolvedJar.add(artifact)
                 }
             } else {
                 throw new ProjectConfigurationException('Only support embed aar and jar dependencies!', null)
