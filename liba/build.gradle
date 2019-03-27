@@ -42,6 +42,9 @@ xEmbedGroup {
     packageName = "com.halohoop.liba"
     versionName = "1.0.0"
 //    outputDirPath = ""//自定义输出路径
+    excludeClass = [
+            'com/halohoop/liba/BuildConfig.class'
+    ]
 }
 
 task a() {
