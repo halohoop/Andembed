@@ -133,36 +133,6 @@ class EmbedGroupPlugin implements Plugin<Project>{
                     println("handling file :" + it.name)
                     it.name.equals("R.class") || it.name.startsWith("R\$")
                 }
-
-                if (excludeClass != null && excludeClass.size() > 0) {
-                    excludeClass.each {
-                        println("excludeClass -> ${it}")
-                        //排除指定class
-                        exclude "${it}"
-                    }
-                }
-                if (excludePackage != null && excludePackage.size() > 0) {
-                    excludePackage.each {
-                        println("excludePackage -> ${it}")
-                        //过滤指定包名下class
-                        exclude "${it}/**/*.class"
-                    }
-                }
-                if (includeClass != null && includeClass.size() > 0) {
-                    includeClass.each {
-                        println("includeClass -> ${it}")
-                        //打包指定的class
-                        include "${it}"
-                    }
-                }
-                if (includePackage != null && includePackage.size() > 0) {
-                    includePackage.each {
-                        println("includePackage -> ${it}")
-                        //仅仅打包指定包名下class
-                        include "${it}/**/*.class"
-                    }
-                }
-
 //                include "${srcClassDir}/**/*.class"
 //                include "*.class"
                 doFirst {
@@ -240,24 +210,9 @@ class EmbedGroupPlugin implements Plugin<Project>{
     def copyProcess() {
         project.configurations.embed.resolvedConfiguration.resolvedArtifacts.each { artifact ->
             if ('aar' == artifact.type) {
-                if (excludeAar != null && excludeAar.size() > 0) {
-                    if (!excludeAar.contains(artifact.file.name)) {
-//                        println("res -> " + artifact.file.name)
-                        resolvedAar.add(artifact)
-                    }
-                } else {
-                    resolvedAar.add(artifact)
-                }
+                resolvedAar.add(artifact)
             } else if ('jar' == artifact.type) {
-                if (excludeJar != null && excludeJar.size() > 0) {
-                    if (!excludeJar.contains(artifact.file.name)) {
-//                        println("res -> " + artifact.file.name)
-                        resolvedJar.add(artifact)
-                    }
-                } else {
-                    resolvedJar.add(artifact)
-                }
-
+                resolvedJar.add(artifact)
             } else {
                 throw new ProjectConfigurationException('Only support embed aar and jar dependencies!', null)
             }
