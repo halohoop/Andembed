@@ -12,6 +12,11 @@
 
 ​	此插件就是为上文中提到的合并功能而生的。
 
+## Change log
+
+- V1.0.4
+    - 新增剔除具体类的配置 excludeClass = [];
+
 ## 使用方式
 
 - 0. 在rootProject的build.gradle中，引用插件
@@ -21,7 +26,7 @@
      ```
 
      ```groovy
-     classpath 'com.halohoop:librarymerger:1.0.3'
+     classpath 'com.halohoop:librarymerger:1.0.4'
      ```
 
 - 2. 在library的默认构建脚本build.gradle中，加入插件
@@ -40,6 +45,11 @@
          versionName = "1.0.0"
          //可省略。配置最终jar包的输出文件夹的绝对路径
          outputDirPath = ""//自定义输出路径
+         //V1.0.4 新增功能 剔除具体类，接受一个数组
+         excludeClass = [
+             'com/halohoop/liba/BuildConfig.class',
+             'c/b/a/BuildConfig.class'
+         ]
      }
      ```
 
