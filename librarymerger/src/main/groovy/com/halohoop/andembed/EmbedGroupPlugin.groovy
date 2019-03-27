@@ -10,12 +10,6 @@ class EmbedGroupPlugin implements Plugin<Project>{
     def project
     def packageName
     def artifactVersion
-    def includeClass
-    def includePackage
-    def excludeJar
-    def excludeAar
-    def excludeClass
-    def excludePackage
     def classesBasePath
 
     def resolvedAar = new HashSet<ResolvedArtifact>(4)
@@ -82,14 +76,6 @@ class EmbedGroupPlugin implements Plugin<Project>{
             if ("".equals(artifactVersion) || artifactVersion == null) {
                 throw new ProjectConfigurationException('Plz add extension with "xEmbedGroup{packageName = "com.halohoop.abc" versionName = ""}"', null)
             }
-
-            includeClass = extension.getIncludeClass().get()
-            includePackage = extension.getIncludePackage().get()
-            excludeJar = extension.getExcludeJar().get()
-            excludeAar = extension.getExcludeJar().get()
-            excludeClass = extension.getExcludeClass().get()
-            excludePackage = extension.getExcludePackage().get()
-
             classesBasePath = packageName.replaceAll("\\.", '\\\\')
 
             //添加自定义构建任务
@@ -271,11 +257,11 @@ class EmbedGroupPlugin implements Plugin<Project>{
                 } else {
                     resolvedJar.add(artifact)
                 }
+
             } else {
                 throw new ProjectConfigurationException('Only support embed aar and jar dependencies!', null)
             }
         }
-
         def srcClassDir = project.buildDir.absolutePath + classesReleasePath
         Set<File> jarFiles = new HashSet<>()
         resolvedAar.each { artifact ->
