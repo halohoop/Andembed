@@ -6,7 +6,7 @@ import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.tasks.bundling.Jar
 
-class EmbedGroupPlugin implements Plugin<Project>{
+class EmbedGroupPlugin implements Plugin<Project> {
     def project
     def packageName
     def artifactVersion
@@ -23,19 +23,20 @@ class EmbedGroupPlugin implements Plugin<Project>{
 
     def classesReleasePath = "${File.separator}intermediates${File.separator}classes${File.separator}release"
     def classesReleasePath2 = "${File.separator}intermediates${File.separator}javac${File.separator}release${File.separator}compileReleaseJavaWithJavac${File.separator}classes"
-
+    //兼容gradle 3.5.0
+    def classes = "${File.separator}intermediates${File.separator}packaged-classes${File.separator}release${File.separator}classes.jar"
     //判断是否是空的文件夹
     def isEmptyDir(def file) {
         def isEmpty = true
         if (file.isDirectory()) {
             def files = file.listFiles()
-            if(files != null && files.length > 0) {
+            if (files != null && files.length > 0) {
                 def listResult = new ArrayList()
                 for (def f : files) {
                     listResult.add(isEmptyDir(f))
                 }
-                for(def result : listResult) {
-                    if(!result) {
+                for (def result : listResult) {
+                    if (!result) {
                         isEmpty = false
                         break
                     }
@@ -125,7 +126,7 @@ class EmbedGroupPlugin implements Plugin<Project>{
             })
 
             //添加打jar包task
-            def make2JarReleaseTask = project.task(type: Jar, "make2JarRelease",{
+            def make2JarReleaseTask = project.task(type: Jar, "make2JarRelease", {
                 def srcClassDir = ["${project.buildDir.absolutePath}${classesReleasePath}",
                                    "${project.buildDir.absolutePath}${classesReleasePath2}"]
 //                baseName = "${project.name}"
@@ -135,6 +136,11 @@ class EmbedGroupPlugin implements Plugin<Project>{
 
                 archiveName = "tmp.jar"
 
+                def gradleVersionStr = project.getGradle().gradleVersion
+                def gradleApiVersion = gradleVersionStr.substring(0, gradleVersionStr.lastIndexOf(".")).toFloat()
+                println "Gradle version: " + gradleApiVersion
+                if (gradleApiVersion >= 3.5f)
+                    from project.zipTree("${project.buildDir.absolutePath}$classes")
                 from srcClassDir
                 destinationDir = new File("${project.buildDir}${File.separator}outputs${File.separator}jar")
                 //根据aar或者jar配置这里需要的文件
@@ -198,7 +204,7 @@ class EmbedGroupPlugin implements Plugin<Project>{
             if (outputDirPath == null || "".equals(outputDirPath)) {
                 throw new ProjectConfigurationException("Plz set a non-empty outputDirPath for output jar.", null)
             }
-            def cleanJarAgainTask = project.task(type: Jar,"cleanJarAgain", {
+            def cleanJarAgainTask = project.task(type: Jar, "cleanJarAgain", {
 //                baseName = "${project.name}"
 //                version = "${artifactVersion}"
 //                classifier = "release"
